@@ -7,42 +7,42 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:wght@300;400;500&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root { --bg: #0e0d0b; --surface: #1a1814; --accent: #c97c3a; --text: #e8e0d5; --muted: #8a7e72; --panel-bg: rgba(20,18,15,0.96); }
+  :root { --bg: #0e0d0b; --accent: #c97c3a; --text: #e8e0d5; --muted: #8a7e72; --panel-bg: rgba(20,18,15,0.96); }
   body { background: var(--bg); color: var(--text); font-family: 'Crimson Pro', serif; height: 100dvh; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
   #header { position: absolute; top: 24px; text-align: center; z-index: 5; }
-  #header h1 { font-family: 'Playfair Display', serif; font-size: 1.6rem; letter-spacing: 0.18em; text-transform: uppercase; }
+  #header h1 { font-family: 'Playfair Display', serif; font-size: 1.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
   #canvas-wrap { position: relative; z-index: 2; cursor: pointer; }
   .hint-ring { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-size: 0.72rem; color: var(--muted); animation: fadeHint 3s infinite; }
   @keyframes fadeHint { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
   #info-panel { position: fixed; bottom: 0; left: 0; right: 0; background: var(--panel-bg); border-top: 1px solid var(--accent); padding: 30px; transform: translateY(100%); transition: transform 0.5s; z-index: 20; max-height: 70dvh; overflow-y: auto; backdrop-filter: blur(10px); }
   #info-panel.open { transform: translateY(0); }
-  .panel-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--accent); }
+  .panel-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--accent); margin-bottom: 15px; }
   #close-btn { background: none; border: 1px solid var(--muted); color: var(--muted); width: 30px; height: 30px; border-radius: 50%; cursor: pointer; float: right; }
   .card { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px; margin-top: 10px; border-left: 3px solid var(--accent); }
   h3 { font-size: 0.9rem; color: var(--accent); margin-bottom: 5px; }
-  p, li { font-size: 0.85rem; opacity: 0.9; line-height: 1.6; }
+  p, li { font-size: 0.85rem; opacity: 0.9; line-height: 1.6; list-style: none; }
 </style>
 </head>
 <body>
-<div id="header"><h1>Arenito</h1><p>Rocha Sedimentar · Chapadas e Planaltos Sedimentares</p></div>
-<div id="canvas-wrap"><canvas id="c"></canvas><div class="hint-ring">clique para explorar</div></div>
+<div id="header"><h1>Arenito</h1><p>Rocha Sedimentar · Chapadas e Planaltos</p></div>
+<div id="canvas-wrap"><canvas id="c"></canvas><div class="hint-ring">clique na rocha para explorar</div></div>
 <div id="info-panel">
   <button id="close-btn">✕</button>
   <div class="panel-title">Arenito</div>
-  <div class="card"><h3>Formação</h3><p>Resulta da compactação de grãos de areia ao longo de milhões de anos. É uma rocha porosa que armazena água e gás.</p></div>
-  <div class="card"><h3>No Relevo</h3><p>Compõe as Chapadas (ex: Diamantina e Guimarães). Por ser menos resistente que o basalto, sofre erosão lateral criando paredões verticais.</p></div>
+  <div class="card"><h3>Composição e Formação</h3><p>Composta principalmente por grãos de <strong>Quartzo</strong>. Forma-se pela deposição de areia em desertos ou rios que, sob pressão, torna-se rocha.</p></div>
+  <div class="card"><h3>No Relevo Brasileiro</h3><p>É a base das <strong>Chapadas</strong> (Diamantina, Guimarães). Sua erosão cria paredões verticais famosos.</p></div>
+  <div class="card"><h3>Importância Hídrica</h3><p>Por ser porosa, funciona como uma esponja gigante, formando o <strong>Aquífero Guarani</strong>.</p></div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-camera.position.z = 4;
+const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100); camera.position.z = 4;
 const renderer = new THREE.WebGLRenderer({canvas: document.getElementById('c'), antialias: true, alpha: true});
 renderer.setSize(450, 450);
-const light = new THREE.DirectionalLight(0xffffff, 1.2); light.position.set(2,2,2); scene.add(light);
-scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+const sun = new THREE.DirectionalLight(0xffeedd, 1.2); sun.position.set(2,2,2); scene.add(sun);
 const geo = new THREE.IcosahedronGeometry(1.2, 3);
-const mat = new THREE.MeshStandardMaterial({color: 0xc97c3a, roughness: 1}); // Cor de areia/arenito
+const mat = new THREE.MeshStandardMaterial({color: 0xc97c3a, roughness: 1}); // Cor terrosa
 const rock = new THREE.Mesh(geo, mat); scene.add(rock);
 function animate() { requestAnimationFrame(animate); rock.rotation.y += 0.005; renderer.render(scene, camera); }
 animate();
@@ -51,4 +51,3 @@ document.getElementById('close-btn').onclick = () => document.getElementById('in
 </script>
 </body>
 </html>
-
