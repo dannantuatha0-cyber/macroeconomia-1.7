@@ -3,45 +3,71 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rocha Granito 3D</title>
+<title>Rocha Arenito 3D</title>
 <style>
-  /* O CSS é o mesmo do anterior, apenas mudei a cor de destaque */
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Crimson+Pro&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:wght@300;400;500&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root { --bg: #0e0d0b; --accent: #95a5a6; --text: #e8e0d5; --muted: #8a7e72; --panel-bg: rgba(20,18,15,0.96); }
-  body { background: var(--bg); color: var(--text); font-family: 'Crimson Pro', serif; height: 100dvh; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-  #header { position: absolute; top: 24px; text-align: center; }
-  #header h1 { font-family: 'Playfair Display', serif; font-size: 1.6rem; letter-spacing: 0.18em; text-transform: uppercase; }
-  #canvas-wrap { position: relative; cursor: pointer; }
-  #info-panel { position: fixed; bottom: 0; left: 0; right: 0; background: var(--panel-bg); border-top: 1px solid var(--accent); padding: 30px; transform: translateY(100%); transition: transform 0.5s; z-index: 20; max-height: 70dvh; overflow-y: auto; backdrop-filter: blur(10px); }
+  :root { --bg: #0e0d0b; --surface: #1a1814; --accent: #c97c3a; --text: #e8e0d5; --muted: #8a7e72; --panel-bg: rgba(20,18,15,0.96); }
+  body { background: var(--bg); color: var(--text); font-family: 'Crimson Pro', serif; height: 100dvh; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+  #header { position: absolute; top: 24px; text-align: center; z-index: 5; }
+  #header h1 { font-family: 'Playfair Display', serif; font-size: 1.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+  #canvas-wrap { position: relative; z-index: 2; cursor: pointer; }
+  .hint-ring { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-size: 0.72rem; color: var(--muted); animation: fadeHint 3s infinite; }
+  @keyframes fadeHint { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+  #info-panel { position: fixed; bottom: 0; left: 0; right: 0; background: var(--panel-bg); border-top: 1px solid var(--accent); padding: 28px 32px; transform: translateY(100%); transition: transform 0.55s; z-index: 20; max-height: 75dvh; overflow-y: auto; backdrop-filter: blur(18px); }
   #info-panel.open { transform: translateY(0); }
   .panel-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--accent); }
-  #close-btn { background: none; border: 1px solid var(--muted); color: var(--muted); width: 30px; height: 30px; border-radius: 50%; cursor: pointer; float: right; }
-  .card { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px; margin-top: 10px; border-left: 3px solid var(--accent); }
-  h3 { font-size: 0.9rem; color: var(--accent); }
-  p { font-size: 0.85rem; opacity: 0.9; }
+  #close-btn { background: none; border: 1px solid var(--muted); color: var(--muted); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; float: right; }
+  .sections { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-top: 20px; }
+  .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 16px; border-top: 2px solid var(--accent); }
+  .card h3 { font-family: 'Playfair Display', serif; font-size: 0.9rem; color: var(--accent); margin-bottom: 8px; }
+  .card p, .card li { font-size: 0.82rem; line-height: 1.6; margin-bottom: 4px; }
+  .divider-label { grid-column: 1/-1; font-size: 0.7rem; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; margin-top: 10px; }
 </style>
 </head>
 <body>
-<div id="header"><h1>Granito</h1><p>Rocha Cristalina · Planaltos Cristalinos Antigos</p></div>
-<div id="canvas-wrap"><canvas id="c"></canvas></div>
+<div id="header"><h1>Arenito</h1><p>Rocha Sedimentar Detrítica · Chapadas Brasileiras</p></div>
+<div id="canvas-wrap"><canvas id="c"></canvas><div class="hint-ring">clique para explorar detalhes</div></div>
 <div id="info-panel">
   <button id="close-btn">✕</button>
-  <div class="panel-title">Granito</div>
-  <div class="card"><h3>Composição</h3><p>Rocha magmática formada no interior da terra. Composta por quartzo, mica e feldspato. É extremamente dura e resistente.</p></div>
-  <div class="card"><h3>No Relevo</h3><p>Forma os Planaltos Cristalinos (ex: Borborema). São as áreas mais estáveis e antigas do relevo brasileiro (Escudos Cristalinos).</p></div>
+  <div class="panel-title">Arenito</div>
+  <div class="sections">
+    <div class="divider-label">Características Físicas</div>
+    <div class="card">
+      <h3>Composição Mineral</h3>
+      <ul>
+        <li>Quartzo (majoritário)</li>
+        <li>Feldspato e fragmentos de rocha</li>
+        <li>Cimento (sílica, calcita ou óxido de ferro)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Propriedades</h3>
+      <p>Textura granular (clástica). Apresenta alta porosidade e permeabilidade, permitindo a circulação de fluidos no seu interior.</p>
+    </div>
+    <div class="divider-label">Geologia e Relevo</div>
+    <div class="card">
+      <h3>Formação das Chapadas</h3>
+      <p>Compõe planaltos sedimentares onde a erosão cria recuos laterais, resultando em topos planos e bordas verticais (escarpas).</p>
+    </div>
+    <div class="card">
+      <h3>Aquífero Guarani</h3>
+      <p>É a principal rocha reservatório. Seus poros armazenam uma das maiores reservas de água doce subterrânea do planeta.</p>
+    </div>
+  </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100); camera.position.z = 4;
+const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100); camera.position.z = 4;
 const renderer = new THREE.WebGLRenderer({canvas: document.getElementById('c'), antialias: true, alpha: true});
-renderer.setSize(450, 450);
-const light = new THREE.DirectionalLight(0xffffff, 1.2); light.position.set(2,2,2); scene.add(light);
-const geo = new THREE.IcosahedronGeometry(1.2, 2);
-const mat = new THREE.MeshStandardMaterial({color: 0x95a5a6, roughness: 0.5, metalness: 0.2});
+renderer.setSize(480, 480);
+scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+const light = new THREE.DirectionalLight(0xffccaa, 1.5); light.position.set(3,3,3); scene.add(light);
+const geo = new THREE.IcosahedronGeometry(1.2, 3);
+const mat = new THREE.MeshStandardMaterial({color: 0xcd853f, roughness: 1, metalness: 0});
 const rock = new THREE.Mesh(geo, mat); scene.add(rock);
-function animate() { requestAnimationFrame(animate); rock.rotation.y += 0.005; renderer.render(scene, camera); }
+function animate() { requestAnimationFrame(animate); rock.rotation.y += 0.004; renderer.render(scene, camera); }
 animate();
 document.getElementById('c').onclick = () => document.getElementById('info-panel').classList.add('open');
 document.getElementById('close-btn').onclick = () => document.getElementById('info-panel').classList.remove('open');
